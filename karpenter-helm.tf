@@ -9,6 +9,9 @@ resource "helm_release" "karpenter" {
   chart      = "karpenter"
   version    = "1.8.2"
 
+
+
+
   # Dynamically generate values.yaml configuration for the Karpenter Helm chart
   values = [
     yamlencode({
@@ -19,7 +22,7 @@ resource "helm_release" "karpenter" {
       settings = {
         clusterName       = module.eks.cluster_name
         clusterEndpoint   = module.eks.cluster_endpoint
-        interruptionQueue = "" # Populated once the SQS interruption queue resource is set up
+        interruptionQueue = aws_sqs_queue.spot_interruption_queue.name # Populated once the SQS interruption queue resource is set up
       }
 
       # IAM Roles for Service Accounts (IRSA): 

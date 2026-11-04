@@ -103,6 +103,8 @@ resource "aws_iam_policy" "karpenter_controller_policy" {
           "iam:RemoveRoleFromInstanceProfile",
           "iam:GetInstanceProfile",
           "iam:DeleteInstanceProfile",
+          "iam:ListInstanceProfiles",
+          "pricing:GetProducts",
           "iam:PassRole",
           "ssm:GetParameter"
         ]
@@ -115,6 +117,17 @@ resource "aws_iam_policy" "karpenter_controller_policy" {
           "eks:DescribeCluster"
         ]
         Resource = module.eks.eks_cluster_arn
+      },
+      { # block 3: NEW, this is Edit 2
+        Sid    = "InterruptionQueueAccess"
+        Effect = "Allow"
+        Action = [
+          "sqs:GetQueueUrl",
+          "sqs:GetQueueAttributes",
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage"
+        ]
+        Resource = aws_sqs_queue.spot_interruption_queue.arn
       }
     ]
   })

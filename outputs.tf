@@ -16,3 +16,16 @@ output "private_subnet_ids" {
 output "ecr_repo_url" {
   value = module.ecr_repo.ecr_repo_url
 }
+
+output "cluster_name" {
+  description = "The name of the EKS cluster"
+  value       = module.eks.cluster_name
+}
+
+output "interruption_queue_url" {
+  value = aws_sqs_queue.spot_interruption_queue.url
+}
+
+output "interruption_queue_arn" {
+  value = aws_sqs_queue.spot_interruption_queue.arn
+}

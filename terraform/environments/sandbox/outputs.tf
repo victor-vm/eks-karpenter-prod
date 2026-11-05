@@ -23,9 +23,9 @@ output "cluster_name" {
 }
 
 output "interruption_queue_url" {
-  value = aws_sqs_queue.spot_interruption_queue.url
+  value = module.karpenter.queue_url
 }
 
 output "interruption_queue_arn" {
-  value = aws_sqs_queue.spot_interruption_queue.arn
+  value = module.karpenter.queue_arn
 }

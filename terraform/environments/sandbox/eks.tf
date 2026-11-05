@@ -1,6 +1,6 @@
 # Calls the EKS module, passing in real values from this project
 module "eks" {
-  source = "./modules/eks"
+  source = "../../modules/eks"
 
   cluster_name     = var.cluster_name
   cluster_role_arn = aws_iam_role.eks_cluster.arn # from iam-cluster.tf
@@ -16,6 +16,6 @@ module "eks" {
 
 
 module "ecr_repo" {
-  source = "./modules/ecr_repo"
+  source = "../../modules/ecr_repo"
   name   = "nginx-repo"
 }

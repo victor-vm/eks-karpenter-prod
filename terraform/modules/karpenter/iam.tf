@@ -12,7 +12,7 @@ data "aws_iam_policy_document" "karpenter_node_assume_role" {
 resource "aws_iam_role" "karpenter_node_role" {
   name               = "${var.cluster_name}-karpenter-node-role"
   assume_role_policy = data.aws_iam_policy_document.karpenter_node_assume_role.json
-  tags               = local.common_tags
+  tags               = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "karpenter_node_worker" {
@@ -38,7 +38,7 @@ resource "aws_iam_role_policy_attachment" "karpenter_node_ssm" {
 resource "aws_iam_instance_profile" "karpenter_node_profile" {
   name = "${var.cluster_name}-karpenter-node-profile"
   role = aws_iam_role.karpenter_node_role.name
-  tags = local.common_tags
+  tags = var.tags
 }
 
 
@@ -52,12 +52,12 @@ data "aws_iam_policy_document" "karpenter_controller_assume_role" {
 
     principals {
       type        = "Federated"
-      identifiers = [module.eks.oidc_provider_arn] # from modules/eks/outputs.tf
+      identifiers = [var.oidc_provider_arn] # from modules/eks/outputs.tf
     }
 
     condition {
       test     = "StringEquals"
-      variable = "${replace(module.eks.oidc_issuer_url, "https://", "")}:sub"
+      variable = "${replace(var.oidc_issuer_url, "https://", "")}:sub"
       values   = ["system:serviceaccount:kube-system:karpenter"]
     }
   }
@@ -66,7 +66,7 @@ data "aws_iam_policy_document" "karpenter_controller_assume_role" {
 resource "aws_iam_role" "karpenter_controller_role" {
   name               = "${var.cluster_name}-karpenter-controller-role"
   assume_role_policy = data.aws_iam_policy_document.karpenter_controller_assume_role.json
-  tags               = local.common_tags
+  tags               = var.tags
 }
 
 # 3. Karpenter Controller Permissions Policy (EC2 provisioning rights)
@@ -116,7 +116,7 @@ resource "aws_iam_policy" "karpenter_controller_policy" {
         Action = [
           "eks:DescribeCluster"
         ]
-        Resource = module.eks.eks_cluster_arn
+        Resource = var.cluster_arn
       },
       { # block 3: NEW, this is Edit 2
         Sid    = "InterruptionQueueAccess"

@@ -20,8 +20,8 @@ resource "helm_release" "karpenter" {
 
       # Core settings required for Karpenter to discover and manage the EKS cluster
       settings = {
-        clusterName       = module.eks.cluster_name
-        clusterEndpoint   = module.eks.cluster_endpoint
+        clusterName       = var.cluster_name
+        clusterEndpoint   = var.cluster_endpoint
         interruptionQueue = aws_sqs_queue.spot_interruption_queue.name # Populated once the SQS interruption queue resource is set up
       }
 
@@ -36,14 +36,8 @@ resource "helm_release" "karpenter" {
     })
   ]
 
-  # CRITICAL DEPENDENCY ORDERING (Prevents Race Conditions):
-  # 1. aws_eks_node_group.bootstrap: Ensures initial control-plane compute is up.
-  # 2. cluster_admin_policy: Guarantees your execution identity has admin access 
-  #    via EKS Access Entries before the Helm provider tries to connect.
-  # 3. karpenter_node: Ensures the EC2 node trust entry is registered.
-  depends_on = [
-    aws_eks_node_group.bootstrap,
-    aws_eks_access_policy_association.cluster_admin_policy,
-    aws_eks_access_entry.karpenter_node
-  ]
+  # The node bootstrap access entry must exist before Karpenter starts, or its
+  # nodes cannot join the cluster. The bootstrap node group and admin access are
+  # enforced by depends_on on the module call in the environment.
+  depends_on = [aws_eks_access_entry.karpenter_node]
 }

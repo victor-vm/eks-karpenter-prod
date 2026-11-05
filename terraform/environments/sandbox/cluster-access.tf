@@ -25,21 +25,3 @@ resource "aws_eks_access_policy_association" "cluster_admin_policy" {
   }
 }
 
-# ==========================================
-# 2. KARPENTER NODE BOOTSTRAP ACCESS ENTRY
-# ==========================================
-# Managed Node Groups auto-register their IAM role with the cluster when
-# created. Karpenter bypasses that entirely — it calls the EC2 API directly
-# to launch nodes, so nothing ever tells the cluster to trust
-# karpenter_node_role. Without this, Karpenter's nodes launch successfully
-# in AWS but get rejected when the kubelet tries to register with the API
-# server, and never become real Kubernetes Node objects.
-resource "aws_eks_access_entry" "karpenter_node" {
-  cluster_name  = module.eks.cluster_name
-  principal_arn = aws_iam_role.karpenter_node_role.arn
-
-  # EC2_LINUX is a special access-entry type built for exactly this case —
-  # it grants node bootstrap permissions automatically, no separate policy
-  # association needed (unlike a human/admin access entry).
-  type = "EC2_LINUX"
-}

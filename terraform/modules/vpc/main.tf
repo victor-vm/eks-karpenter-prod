@@ -26,8 +26,7 @@ resource "aws_subnet" "public" {
   tags = merge(local.common_tags, {
     Name                                        = "${var.cluster_name}-public-subnet-${local.azs[count.index]}"
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-    "kubernetes.io/role/elb"                    = "1"
-  })
+  }, var.public_subnet_tags)
 }
 
 resource "aws_subnet" "private" {
@@ -39,9 +38,7 @@ resource "aws_subnet" "private" {
   tags = merge(local.common_tags, {
     Name                                        = "${var.cluster_name}-private-subnet-${local.azs[count.index]}"
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
-    "kubernetes.io/role/internal-elb"           = "1"
-    "karpenter.sh/discovery"                    = var.cluster_name
-  })
+  }, var.private_subnet_tags)
 }
 
 # Public Route Table

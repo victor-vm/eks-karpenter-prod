@@ -23,3 +23,13 @@ variable "oidc_issuer_url" {
   description = "OIDC issuer URL of the cluster (for IRSA)"
   type        = string
 }
+
+variable "cluster_endpoint" {
+  description = "EKS API server endpoint, passed to Karpenter so it can reach the cluster"
+  type        = string
+}
+
+variable "cluster_security_group_id" {
+  description = "EKS cluster security group, tagged so Karpenter nodes can be matched to it"
+  type        = string
+}

@@ -22,7 +22,7 @@ resource "helm_release" "karpenter" {
       settings = {
         clusterName       = module.eks.cluster_name
         clusterEndpoint   = module.eks.cluster_endpoint
-        interruptionQueue = aws_sqs_queue.spot_interruption_queue.name # Populated once the SQS interruption queue resource is set up
+        interruptionQueue = module.karpenter.queue_name # Populated once the SQS interruption queue resource is set up
       }
 
       # IAM Roles for Service Accounts (IRSA): 

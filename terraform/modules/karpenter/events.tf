@@ -32,7 +32,7 @@ resource "aws_cloudwatch_event_rule" "karpenter_interruption" {
     "detail-type" = each.value.detail-type
   })
 
-  tags = local.common_tags
+  tags = var.tags
 }
 
 # 3. EventBridge Targets pointing each rule to your spot_interruption_queue

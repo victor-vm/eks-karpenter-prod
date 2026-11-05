@@ -127,7 +127,7 @@ resource "aws_iam_policy" "karpenter_controller_policy" {
           "sqs:ReceiveMessage",
           "sqs:DeleteMessage"
         ]
-        Resource = aws_sqs_queue.spot_interruption_queue.arn
+        Resource = module.karpenter.queue_arn
       }
     ]
   })

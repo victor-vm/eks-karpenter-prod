@@ -44,6 +44,6 @@ resource "helm_release" "karpenter" {
   depends_on = [
     aws_eks_node_group.bootstrap,
     aws_eks_access_policy_association.cluster_admin_policy,
-    aws_eks_access_entry.karpenter_node
+    module.karpenter
   ]
 }

@@ -36,7 +36,7 @@ resource "aws_eks_access_policy_association" "cluster_admin_policy" {
 # server, and never become real Kubernetes Node objects.
 resource "aws_eks_access_entry" "karpenter_node" {
   cluster_name  = module.eks.cluster_name
-  principal_arn = aws_iam_role.karpenter_node_role.arn
+  principal_arn = module.karpenter.node_role_arn
 
   # EC2_LINUX is a special access-entry type built for exactly this case —
   # it grants node bootstrap permissions automatically, no separate policy

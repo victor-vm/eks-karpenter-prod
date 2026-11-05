@@ -12,3 +12,15 @@ output "queue_url" {
   description = "SQS interruption queue URL"
   value       = aws_sqs_queue.spot_interruption_queue.url
 }
+
+output "node_role_arn" {
+  value = aws_iam_role.karpenter_node_role.arn
+}
+
+output "node_role_name" {
+  value = aws_iam_role.karpenter_node_role.name
+}
+
+output "controller_role_arn" {
+  value = aws_iam_role.karpenter_controller_role.arn
+}

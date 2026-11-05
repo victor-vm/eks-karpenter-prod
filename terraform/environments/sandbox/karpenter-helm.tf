@@ -30,7 +30,7 @@ resource "helm_release" "karpenter" {
       # so Karpenter has permissions to call the EC2 and EKS APIs.
       serviceAccount = {
         annotations = {
-          "eks.amazonaws.com/role-arn" = aws_iam_role.karpenter_controller_role.arn
+          "eks.amazonaws.com/role-arn" = module.karpenter.controller_role_arn
         }
       }
     })

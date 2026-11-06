@@ -9,7 +9,7 @@ USER-SUPPLIED VALUES:
 replicas: 1
 serviceAccount:
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::986263533044:role/eks-karpenter-sandbox-karpenter-controller-role
+    eks.amazonaws.com/role-arn: arn:aws:iam::<ACCOUNT_ID>:role/eks-karpenter-sandbox-karpenter-controller-role
 settings:
   clusterEndpoint: https://E3E29612D8AC39CA4F19CD8D9C58D458.gr7.ap-south-1.eks.amazonaws.com
   clusterName: eks-karpenter-sandbox

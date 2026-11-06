@@ -38,3 +38,4 @@ tfplan
 plan.log
 apply.log
 plan*.log
+apply*.log

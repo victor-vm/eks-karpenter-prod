@@ -13,5 +13,8 @@ module "karpenter" {
   depends_on = [
     aws_eks_node_group.bootstrap,
     aws_eks_access_policy_association.cluster_admin_policy,
+    # The ALB controller webhook intercepts every Service; Karpenter's chart creates one,
+    # so the webhook must be serving before Karpenter installs.
+    module.alb_controller,
   ]
 }

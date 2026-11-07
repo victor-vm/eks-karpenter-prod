@@ -19,3 +19,13 @@ variable "role_name" {
   description = "Name of the IAM role assumed by GitHub Actions"
   default     = "github-actions-ecr-push"
 }
+
+variable "github_owner_id" {
+  type        = string
+  description = "Numeric GitHub owner ID, part of the immutable OIDC subject"
+}
+
+variable "github_repository_id" {
+  type        = string
+  description = "Numeric GitHub repository ID, part of the immutable OIDC subject"
+}

@@ -1,5 +1,5 @@
 resource "aws_ecr_repository" "repo_name" {
-  name                 = "nginx-repo"
+  name                 = var.name
   image_tag_mutability = "MUTABLE"
   force_delete         = true # lab only
 

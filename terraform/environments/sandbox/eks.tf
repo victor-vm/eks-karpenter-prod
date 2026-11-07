@@ -15,7 +15,3 @@ module "eks" {
 }
 
 
-module "ecr_repo" {
-  source = "../../modules/ecr_repo"
-  name   = "nginx-repo"
-}

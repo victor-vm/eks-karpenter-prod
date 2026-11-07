@@ -13,9 +13,6 @@ output "private_subnet_ids" {
   value       = module.vpc.private_subnet_ids
 }
 
-output "ecr_repo_url" {
-  value = module.ecr_repo.ecr_repo_url
-}
 
 output "cluster_name" {
   description = "The name of the EKS cluster"
